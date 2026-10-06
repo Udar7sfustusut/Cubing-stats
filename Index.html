@@ -228,6 +228,13 @@
       background-color: #334155;
     }
 
+    .btn-danger {
+      background-color: #ef4444;
+    }
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+
     .color-picker-wrapper {
       display: flex;
       gap: 0.5rem;
@@ -241,6 +248,15 @@
       border-radius: 4px;
       cursor: pointer;
       background: none;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .button-row .btn {
+      flex: 1;
     }
 
     /* Modal */
@@ -353,7 +369,10 @@
           <hr style="border-color: #444; margin: 4px 0;" />
 
           <div class="control-group">
-            <button class="btn btn-secondary" id="pasteData2Btn">Paste 2nd Data</button>
+            <div class="button-row">
+              <button class="btn btn-secondary" id="pasteData2Btn">Paste 2nd Data</button>
+              <button class="btn btn-danger" id="removeData2Btn" title="Remove Dataset 2">Clear 2nd</button>
+            </div>
             <div class="color-picker-wrapper">
               <input type="color" id="color2" value="#a855f7" />
               <span style="color:#aaa; font-size:0.8rem;">Dataset 2 Color</span>
@@ -427,7 +446,7 @@
         if (!line) continue;
 
         // csTimer line pattern matching "1. 28.83   U R2..." or "138. 26.75+   U..."
-        const csTimerMatch = line.match(/^\d+\.\0*([0-9]+(?:\.[0-9]+)?)\+?\s*\[?/);
+        const csTimerMatch = line.match(/^\d+\.\s*([0-9]+(?:\.[0-9]+)?)\+?\s*\[?/);
         if (csTimerMatch) {
           const val = parseFloat(csTimerMatch[1]);
           if (!isNaN(val)) times.push(val);
@@ -681,6 +700,11 @@
       targetDataset = 2;
       modalTitle.innerText = "Paste Data (Set 2)";
       pasteModal.classList.add('active');
+    };
+
+    document.getElementById('removeData2Btn').onclick = () => {
+      dataset2 = [];
+      renderChart();
     };
 
     document.getElementById('closeModalBtn').onclick = () => {
